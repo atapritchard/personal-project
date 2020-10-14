@@ -1,0 +1,56 @@
+---
+title: "Research and Development"
+author: "Alden Pritchard"
+date: "October 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(ggseas)
+library(lubridate)
+
+data <- read_csv('trade_log.csv')
+data
+by_datetime <- summarize(group_by(data, Datetime, Rule),
+                     perf = mean(Performance) / 100 + 1)
+by_rule <- summarize(group_by(by_datetime, Rule), 
+                     Return = (prod(perf) - 1) * 100,
+                     EV = (mean(perf) - 1) * 100)
+by_rule
+
+```
+
+#### the following time series plots show individual trade performance by date and time, and not portfolio value over time.
+
+```{r}
+by_datetime$TradeIndex <- seq.int(nrow(by_datetime))
+dt_plt <- ggplot(by_datetime, aes(x=TradeIndex, y=(perf-1)*100, color=Rule)) +
+  stat_rollapplyr(width=3, align="left", size=0.25) +
+  geom_hline(yintercept=0, color='blue') +
+  labs(color="Exit Rule")
+dt_plt
+
+dt_plt <- ggplot(by_datetime, aes(x=TradeIndex, y=(perf-1)*100, color=Rule)) +
+  stat_rollapplyr(width=12, align="left", size=0.25) +
+  geom_hline(yintercept=0, color='blue') +
+  labs(color="Exit Rule")
+dt_plt
+
+
+plt <- ggplot(by_datetime, aes(x=TradeIndex, y=(perf-1)*100, color=Rule)) +
+  geom_point() + facet_wrap(~Rule) +
+  geom_hline(yintercept=0, color='black') +
+  labs(color="Exit Rule")
+plt
+
+# Monthly target (to double each year):
+# (2^(1/12) - 1) * 100  # ≈6%
+# 1.03^24
+
+```

@@ -1,14 +1,14 @@
-Hello! This folder contains most of the code that is used for the R&D stuff I\'92m working on right now. The code to build the dataset was removed because it contains lots of references to things elsewhere in the project and I didn\'92t want to submit a large pile of code. The structure of the project is pretty linear:
+Hello! This folder contains most of the code that is used for the R&D stuff I’m working on right now. The code to build the datasets was removed because it contains lots of references to things elsewhere in the project and I didn’t want to submit a large pile of code. The structure of the project is pretty linear:
 
 1. Use stored data to create a data set (this is done in the dataset_builder.py file which has been omitted) with a specific binary target instead of a flat stock up/down, save data set to file (see example data set hybrid.csv in datasets folder)
 
 2. Use a multilayer perceptron classifier to predict the modified interpretation of the next stock move (this happens in modeling.py). The MLP is trained on some amount of data and is then tested on roughly a 2-week period. The trades generated during testing get saved to hybrid.csv (in the tradefiles folder)
 
-3. Run an analysis on the test trades to see how the algorithm performs (this happens in trade_analysis.py), tracking the performance of each trade (each trade\'92s performance gets saved to trade_log.csv, summary analyses from python are saved to analyses.csv)\
+3. Run an analysis on the test trades to see how the algorithm performs (this happens in trade_analysis.py), tracking the performance of each trade (each trade’s performance gets saved to trade_log.csv, summary analyses from python are saved to analyses.csv)
 
 4. Run supplementary analysis in R to visualize performance over time and compute summary statistics, output saved to rnd.html
 Current performance on test data suggests potential returns of roughly 3% every two weeks, which is very exciting.
 
 The starter,py file is used for running the entire R&D process with a single program.
 
-If there\'92s anything you\'92d like to know that\'92s not here, please feel free to email me at atpritch@andrew.cmu.edu}
+If there’s anything you’d like to know that’s not here, please feel free to email me at atpritch@andrew.cmu.edu
